@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MINI BYTE ZONE</title>
+
+  <!-- ✅ Font Orbitron for gamer style -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+ 
+    body {
+      font-family: 'Orbitron', Arial, sans-serif;
+      text-align: center;
+      background: url('https://t4.ftcdn.net/jpg/04/42/21/53/360_F_442215355_AjiR6ogucq3vPzjFAAEfwbPXYGqYVAap.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 150vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .logo-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .logo-bar img {
+      width: 80px;
+      height: auto;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: bold;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+
+    .menu {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      display: inline-block;
+      color: white;
+    }
+
+    h1, h2 {
+      color: #fff;
+      text-shadow: 1px 1px 5px #000;
+    }
+
+    .game-container {
+      margin: 20px;
+      display: none;
+    }
+
+    canvas {
+      background: url('data:image/jpeg;base64,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'); 
+      background-size: cover;
+      display: block;
+      margin: 0 auto;
+      border: 2px solid #333;
+    }
+
+    button {
+      padding: 15px 20px;
+      margin: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      background: linear-gradient(45deg, #00f2fe, #4facfe);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00f2fe, 0 0 20px #4facfe;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00f2fe, 0 0 30px #4facfe;
+    }
+
+    button img {
+      height: 60px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+    }
+
+    button div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 5px;
+      justify-content: center;
+      margin: 20px auto;
+      padding: 10px;
+      position: relative;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: #000;
+      font-size: 90px;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid #fff;
+      cursor: pointer;
+    }
+
+    #winLine {
+      position: absolute;
+      height: 9px;
+      background: yellow;
+      z-index: 5;
+      transform-origin: left center;
+      display: none;
+      border-radius: 6px;
+      box-shadow: 0 0 20px 8px yellow;
+    }
+	/* Rock Paper Scissors Styling */
+.rps-hands {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 20px 0;
+ 
+}
+
+.hand {
+  font-size: 80px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #4facfe;
+  background-color: rgba(0, 0, 0, 0.65); /* blackish transparent background */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #00000055;
+}
+
+.hand:hover {
+  transform: scale(1.2);
+}
+
+.rps-feedback {
+  margin-top: 15px;
+  font-size: 22px;
+  color: #0ff;
+  text-shadow: 0 0 8px #0ff, 0 0 12px #4facfe;
+  font-weight: bold;
+}
+
+.rps-msg {
+  display: none;
+  margin-top: 10px;
+}
+
+.rps-msg.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.match {
+  display: none;
+}
+
+/* RPS result feedback animation */
+.rps-feedback.show {
+  display: block;
+  animation: popFade 0.5s ease-out;
+}
+
+@keyframes popFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Style the feedback based on result */
+.rps-feedback.win {
+  color: #0f0;
+  text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+}
+
+.rps-feedback.lose {
+  color: #f00;
+  text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+}
+
+.rps-feedback.draw {
+  color: #ff0;
+  text-shadow: 0 0 10px #ff0, 0 0 20px #ff0;
+}
+
+/* Reset button style (optional improvement) */
+button[onclick="resetRPSResult()"] {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff00ff, #6600ff);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #f0f, 0 0 20px #90f;
+  transition: transform 0.2s ease;
+}
+
+button[onclick="resetRPSResult()"]:hover {
+  transform: scale(1.1);
+}
+.rps-scoreboard {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #0ff;
+  text-shadow: 0 0 6px #0ff, 0 0 14px #4facfe;
+}
+/* Glowing scoreboard text */
+.rps-scoreboard span {
+  transition: transform 0.2s ease;
+}
+
+.rps-scoreboard span.glow {
+  animation: pulseScore 0.5s ease-out;
+}
+
+@keyframes pulseScore {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 5px #0ff, 0 0 10px #4facfe;
+  }
+  50% {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px #0ff, 0 0 20px #4facfe;
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 6px #0ff, 0 0 14px #4facfe;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="logo-bar">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYYIzfv9-uxz8x93qYcZDHMwLHk-Y8Ub3-OQ&s" alt="Game Logo">
+    <span class="logo-text">MINI BYTE ZONE</span>
+  </div>
+
+  <div class="menu">
+    <h1>GAMES TO PLAY</h1>
+
+    <!-- ✅ Tic Tac Toe Button with Bigger Image on Top -->
+   <button class="game-button" onclick="window.open('ttt.html', '_blank')">
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/Tic_tac_toe.svg" alt="Tic Tac Toe" />
+        <span>PLAY TIC TAC TOE</span>
+      </div>
+    </button>
+
+    <!-- ✅ Snake Game Button with Bigger Image on Top -->
+    <button class="game-button" onclick="window.open('snake.html', '_blank')">
+      <div>
+        <img src="data:image/png;base64,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" alt="Snake Game" />
+        <span>PLAY SNAKE GAME</span>
+      </div>
+    </button>
+	
+	 <!-- ✅ Rock Paper Scissors Game Button -->
+<button class="game-button" onclick="window.open('rps.html', '_blank')">
+  <div>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFpropWTtKmXDnvaNKmKo3AkibttWZOYq4FVqDu7EDBTRUCNSGVZrCkKRbiLlv-5g6c-A&usqp=CAU" alt="Rock Paper Scissors" style="height: 60px; width: 50px;" />
+    <span>ROCK PAPER SCISSOR</span>
+  </div>
+</button>
+  </div>
+  
+ 
+
+
+  <div id="ticTacToe" class="game-container">
+    <h2>Tic Tac Toe</h2>
+    <div class="board" id="board">
+      <div class="cell" onclick="makeMove(this, 0)"></div>
+      <div class="cell" onclick="makeMove(this, 1)"></div>
+      <div class="cell" onclick="makeMove(this, 2)"></div>
+      <div class="cell" onclick="makeMove(this, 3)"></div>
+      <div class="cell" onclick="makeMove(this, 4)"></div>
+      <div class="cell" onclick="makeMove(this, 5)"></div>
+      <div class="cell" onclick="makeMove(this, 6)"></div>
+      <div class="cell" onclick="makeMove(this, 7)"></div>
+      <div class="cell" onclick="makeMove(this, 8)"></div>
+      <div id="winLine"></div>
+    </div>
+    <p id="result"></p>
+    <button onclick="resetBoard()">Restart Game</button>
+  </div>
+
+  <div id="snake" class="game-container">
+    <h2>Snake Game</h2>
+    <p><strong>Use Arrow Keys</strong> to control the snake.</p>
+    <p>Score: <span id="score">0</span></p>
+    <canvas id="snakeCanvas" width="500" height="400"></canvas>
+    <br>
+    <button onclick="startSnakeGame()">Start / Restart</button>
+    <p id="snakeGameOver" style="color:red; font-size:18px;"></p>
+  </div>
+
+
+
+ <div id="rps" class="game-container">
+  <h2>Rock Paper Scissors</h2>
+  <p><strong>Pick your hand:</strong></p>
+
+  <!-- Fake Match Inputs -->
+  <input type="radio" name="match" id="r-rock-c-rock" class="match" />
+  <input type="radio" name="match" id="r-rock-c-paper" class="match" />
+  <input type="radio" name="match" id="r-rock-c-scissors" class="match" />
+  <input type="radio" name="match" id="r-paper-c-rock" class="match" />
+  <input type="radio" name="match" id="r-paper-c-paper" class="match" />
+  <input type="radio" name="match" id="r-paper-c-scissors" class="match" />
+  <input type="radio" name="match" id="r-scissors-c-rock" class="match" />
+  <input type="radio" name="match" id="r-scissors-c-paper" class="match" />
+  <input type="radio" name="match" id="r-scissors-c-scissors" class="match" />
+
+  <!-- Buttons to Simulate -->
+  <div class="rps-hands">
+  <div class="hand" onclick="playRPS('rock')">✊</div>
+  <div class="hand" onclick="playRPS('paper')">✋</div>
+  <div class="hand" onclick="playRPS('scissors')">✌️</div>
+</div>
+
+  <!-- Fake Result Display -->
+  <div class="rps-scoreboard">
+  <span>🧍 You: <span id="playerScore">0</span></span>
+  <span>💻 Computer: <span id="computerScore">0</span></span>
+</div>
+  <div class="rps-feedback" id="rpsResult"></div>
+    <div class="rps-msg" id="msg1">Result:</div>
+
+    <!-- Rock vs Paper -->
+    <div class="rps-msg" id="rock-paper">🧍YOU: ✊ — 💻COMPUTER: ✋ → ❌ YOU LOSE</div>
+    <!-- Paper vs Scissors -->
+    <div class="rps-msg" id="paper-scissors">🧍YOU: ✋ — 💻COMPUTER: ✌️ → ❌ YOU LOSE</div>
+    <!-- Scissors vs Rock -->
+    <div class="rps-msg" id="scissors-rock">🧍YOU: ✌️ — 💻COMPUTER: ✊ → ❌ YOU LOSE</div>
+  </div>
+</div>
+</div>
+  <script>
+  function showGame(gameId) {
+    document.getElementById("ticTacToe").style.display = "none";
+    document.getElementById("snake").style.display = "none";
+    document.getElementById("rps").style.display = "none";
+    document.getElementById(gameId).style.display = "block";
+  }
+
+  let currentPlayer = "X";
+  let board = ["", "", "", "", "", "", "", "", ""];
+
+  function makeMove(cell, index) {
+    if (board[index] === "") {
+      board[index] = currentPlayer;
+      cell.textContent = currentPlayer;
+      cell.style.color = currentPlayer === "X" ? "#ff073a" : "#00ffff";
+      cell.style.textShadow = currentPlayer === "X"
+        ? "0 0 8px #ff073a, 0 0 12px #ff073a"
+        : "0 0 8px #00ffff, 0 0 12px #00ffff";
+
+      if (checkWin()) {
+        document.getElementById("result").textContent = `${currentPlayer} wins!`;
+      } else if (board.every(c => c !== "")) {
+        document.getElementById("result").textContent = "It's a draw!";
+      } else {
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+      }
+    }
+  }
+
+  function checkWin() {
+    const winPatterns = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
+    for (const pattern of winPatterns) {
+      const [a, b, c] = pattern;
+      if (board[a] === currentPlayer && board[b] === currentPlayer && board[c] === currentPlayer) {
+        drawWinLine(a, c);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function drawWinLine(startIndex, endIndex) {
+    const cells = document.querySelectorAll('.cell');
+    const start = cells[startIndex].getBoundingClientRect();
+    const end = cells[endIndex].getBoundingClientRect();
+    const boardRect = document.getElementById("board").getBoundingClientRect();
+
+    const x1 = start.left + start.width / 2 - boardRect.left;
+    const y1 = start.top + start.height / 2 - boardRect.top;
+    const x2 = end.left + end.width / 2 - boardRect.left;
+    const y2 = end.top + end.height / 2 - boardRect.top;
+
+    const length = Math.hypot(x2 - x1, y2 - y1);
+    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+    const line = document.getElementById("winLine");
+    line.style.display = "block";
+    line.style.width = `${length}px`;
+    line.style.left = `${x1}px`;
+    line.style.top = `${y1}px`;
+    line.style.transform = `rotate(${angle}deg)`;
+  }
+
+  function resetBoard() {
+    board = ["", "", "", "", "", "", "", "", ""];
+    currentPlayer = "X";
+    document.querySelectorAll(".cell").forEach(cell => {
+      cell.textContent = "";
+      cell.style.color = "white";
+    });
+    document.getElementById("result").textContent = "";
+    document.getElementById("winLine").style.display = "none";
+  }
+
+  let snakeCanvas = document.getElementById("snakeCanvas");
+  let ctx = snakeCanvas.getContext("2d");
+  let box = 10;
+  let snake = [];
+  let food;
+  let dx = 0, dy = 0;
+  let score = 0;
+  let gameLoop;
+  let changingDirection = false;
+  let gameSpeed = 100;
+
+  function startSnakeGame() {
+    snake = [{ x: 200, y: 200 }];
+    dx = box;
+    dy = 0;
+    score = 0;
+    gameSpeed = 150;
+    changingDirection = false;
+    food = getRandomFood();
+    document.getElementById("score").innerText = score;
+    document.getElementById("snakeGameOver").innerText = "";
+    clearInterval(gameLoop);
+    gameLoop = setInterval(updateGame, gameSpeed);
+  }
+
+  function getRandomFood() {
+    return {
+      x: Math.floor(Math.random() * (snakeCanvas.width / box)) * box,
+      y: Math.floor(Math.random() * (snakeCanvas.height / box)) * box
+    };
+  }
+
+  function drawSnake() {
+    ctx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, box, box);
+
+    snake.forEach((part, i) => {
+      ctx.fillStyle = i === 0 ? "#006400" : "#32CD32";
+      ctx.fillRect(part.x, part.y, box, box);
+      ctx.strokeStyle = "#004400";
+      ctx.strokeRect(part.x, part.y, box, box);
+    });
+  }
+
+  function updateGame() {
+    changingDirection = false;
+    let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+    if (
+      head.x < 0 || head.x >= snakeCanvas.width ||
+      head.y < 0 || head.y >= snakeCanvas.height ||
+      snake.some(part => part.x === head.x && part.y === head.y)
+    ) {
+      clearInterval(gameLoop);
+      document.getElementById("snakeGameOver").innerText = "Game Over! Click Start to play again.";
+      return;
+    }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score++;
+      document.getElementById("score").innerText = score;
+      food = getRandomFood();
+      if (gameSpeed > 20) {
+        gameSpeed -= 5;
+        clearInterval(gameLoop);
+        gameLoop = setInterval(updateGame, gameSpeed);
+      }
+    } else {
+      snake.pop();
+    }
+
+    drawSnake();
+  }
+
+  document.addEventListener("keydown", changeDirection);
+
+  function changeDirection(event) {
+    event.preventDefault();
+    const key = event.key;
+    if (key === "ArrowUp" && dy === 0) {
+      dx = 0;
+      dy = -box;
+    } else if (key === "ArrowDown" && dy === 0) {
+      dx = 0;
+      dy = box;
+    } else if (key === "ArrowLeft" && dx === 0) {
+      dx = -box;
+      dy = 0;
+    } else if (key === "ArrowRight" && dx === 0) {
+      dx = box;
+      dy = 0;
+    }
+  }
+
+  // ✅ Rock Paper Scissors logic
+  let playerScore = 0;
+  let computerScore = 0;
+
+  function playRPS(playerChoice) {
+    const choices = ['rock', 'paper', 'scissors'];
+    const computerChoice = choices[Math.floor(Math.random() * 3)];
+    const resultText = document.getElementById('rpsResult');
+    const msgElements = document.querySelectorAll('.rps-msg');
+    const resultDisplay = document.getElementById(`${playerChoice}-${computerChoice}`);
+    const msg1 = document.getElementById('msg1');
+
+    msgElements.forEach(msg => msg.classList.remove('show'));
+    msg1.classList.add('show');
+
+    let result;
+    if (playerChoice === computerChoice) {
+      result = 'draw';
+      resultText.textContent = "🤝 It's a Draw!";
+      resultText.className = 'rps-feedback draw show';
+    } else if (
+      (playerChoice === 'rock' && computerChoice === 'scissors') ||
+      (playerChoice === 'paper' && computerChoice === 'rock') ||
+      (playerChoice === 'scissors' && computerChoice === 'paper')
+    ) {
+      result = 'win';
+      playerScore++;
+      resultText.textContent = "🎉 You Win!";
+      resultText.className = 'rps-feedback win show';
+    } else {
+      result = 'lose';
+      computerScore++;
+      resultText.textContent = "😢 You Lose!";
+      resultText.className = 'rps-feedback lose show';
+    }
+
+    document.getElementById('playerScore').textContent = playerScore;
+    document.getElementById('computerScore').textContent = computerScore;
+
+    if (resultDisplay) resultDisplay.classList.add('show');
+  }
+
+  function resetRPSResult() {
+    document.getElementById('rpsResult').textContent = "";
+    document.querySelectorAll('.rps-msg').forEach(msg => msg.classList.remove('show'));
+    document.getElementById('msg1').classList.remove('show');
+  }
+</script>
+</body>
+</html>

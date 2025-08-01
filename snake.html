@@ -1,0 +1,179 @@
+<!-- Save as: snake-game.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Snake Game</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+   background:url('https://wallpapers.com/images/hd/neon-room-rog-gaming-logo-hd-e75ziv6ric2bizbc.jpg'); 
+    color: #00f2fe;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .neon-heading {
+    font-size: 2.5em;
+    color: #FFFFFF;
+    text-shadow:
+      0 0 5px #00f2fe,
+      0 0 10px #00f2fe,
+      0 0 20px #00f2fe,
+      0 0 40px #00c6ff,
+      0 0 60px #00c6ff;
+    margin-top: 30px;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 1.2em;
+    color: white;
+    text-shadow: 0 0 8px #00f2fe;
+  }
+
+  #score {
+    font-weight: bold;
+    color: #00f2fe;
+    text-shadow: 0 0 5px #00f2fe;
+  }
+
+  canvas {
+    background:url('https://discuss.codingblocks.com/uploads/default/original/2X/8/891ee9a180d14aa4cb2f71100d7b3a987215d384.jpg'); 
+    border: 2px solid #00f2fe;
+    box-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe;
+    margin-top: 20px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    font-size: 1em;
+    font-weight: bold;
+    background: transparent;
+    color: #00f2fe;
+    border: 2px solid #00f2fe;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 8px #00f2fe, 0 0 12px #00f2fe;
+    text-shadow: 0 0 5px #00f2fe;
+    transition: 0.3s ease;
+  }
+
+  button:hover {
+    background: #00f2fe;
+    color: black;
+    text-shadow: none;
+  }
+
+  #snakeGameOver {
+    color: red;
+    font-size: 18px;
+    text-shadow: 0 0 6px red;
+  }
+</style>
+</head>
+<body>
+  <h2 class="neon-heading">Snake Game</h2>
+  <p><strong>USE ARROW KEYS TO PLAY.</strong> </p>
+  <p>Score: <span id="score">0</span></p>
+  <canvas id="snakeCanvas" width="500" height="400"></canvas>
+  <br>
+  <button onclick="startSnakeGame()">START / RESTART</button>
+  <p id="snakeGameOver" style="color:red; font-size:18px;"></p>
+
+  <script>
+    let canvas = document.getElementById("snakeCanvas");
+    let ctx = canvas.getContext("2d");
+    let box = 10;
+    let snake = [];
+    let food;
+    let dx = 0, dy = 0;
+    let score = 0;
+    let gameLoop;
+    let gameSpeed = 100;
+
+    function startSnakeGame() {
+      snake = [{ x: 200, y: 200 }];
+      dx = box;
+      dy = 0;
+      score = 0;
+      gameSpeed = 150;
+      food = getRandomFood();
+      document.getElementById("score").innerText = score;
+      document.getElementById("snakeGameOver").innerText = "";
+      clearInterval(gameLoop);
+      gameLoop = setInterval(updateGame, gameSpeed);
+    }
+
+    function getRandomFood() {
+      return {
+        x: Math.floor(Math.random() * (canvas.width / box)) * box,
+        y: Math.floor(Math.random() * (canvas.height / box)) * box
+      };
+    }
+
+    function drawSnake() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "red";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      snake.forEach((part, i) => {
+        ctx.fillStyle = i === 0 ? "#006400" : "#32CD32";
+        ctx.fillRect(part.x, part.y, box, box);
+        ctx.strokeStyle = "#004400";
+        ctx.strokeRect(part.x, part.y, box, box);
+      });
+    }
+
+    function updateGame() {
+      let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+      if (
+        head.x < 0 || head.x >= canvas.width ||
+        head.y < 0 || head.y >= canvas.height ||
+        snake.some(part => part.x === head.x && part.y === head.y)
+      ) {
+        clearInterval(gameLoop);
+        document.getElementById("snakeGameOver").innerText = "Game Over! Click Start to play again.";
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        document.getElementById("score").innerText = score;
+        food = getRandomFood();
+        if (gameSpeed > 20) {
+          gameSpeed -= 5;
+          clearInterval(gameLoop);
+          gameLoop = setInterval(updateGame, gameSpeed);
+        }
+      } else {
+        snake.pop();
+      }
+
+      drawSnake();
+    }
+
+    document.addEventListener("keydown", function(event) {
+    const key = event.key;
+    if (key === "ArrowUp" && dy === 0) { dx = 0; dy = -box; }
+    else if (key === "ArrowDown" && dy === 0) { dx = 0; dy = box; }
+    else if (key === "ArrowLeft" && dx === 0) { dx = -box; dy = 0; }
+    else if (key === "ArrowRight" && dx === 0) { dx = box; dy = 0; }
+  });
+
+  // 💥 Strong scroll prevention — works in all browsers
+  window.addEventListener("keydown", function(e) {
+    const keysToBlock = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
+    if (keysToBlock.includes(e.key)) {
+      e.preventDefault();
+    }
+  }, true); // ← make sure this third argument is TRUE
+  </script>
+</body>
+</html>
